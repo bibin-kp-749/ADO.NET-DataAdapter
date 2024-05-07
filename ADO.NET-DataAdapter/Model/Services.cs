@@ -16,7 +16,6 @@ namespace ADO.NET_DataAdapter.Model
             using(SqlConnection _con=new SqlConnection(_connection))
             {
                 SqlDataAdapter adapter = new SqlDataAdapter("select * from student",_con);
-                SqlCommandBuilder builder = new SqlCommandBuilder(adapter);
                 DataSet dataSet = new DataSet();
                 adapter.Fill(dataSet);
                 foreach(DataRow row in dataSet.Tables[0].Rows)
@@ -35,8 +34,8 @@ namespace ADO.NET_DataAdapter.Model
         {
             using(SqlConnection _con = new SqlConnection(_connection))
             {
-                SqlCommand selectcommand = new SqlCommand("select * from student where id=id", _con);
-                selectcommand.Parameters.AddWithValue("id", student.Id);
+                SqlCommand selectcommand = new SqlCommand("select * from student where id=@id", _con);
+                selectcommand.Parameters.AddWithValue("@id", student.Id);
                 SqlDataAdapter adapter = new SqlDataAdapter(selectcommand);
                 DataSet dataSet = new DataSet();
                 adapter.Fill(dataSet);
@@ -61,6 +60,23 @@ namespace ADO.NET_DataAdapter.Model
                 SqlCommandBuilder sqlCommandBuilder= new SqlCommandBuilder(adapter);
                 adapter.Update(ds);
             }
+        }
+        public string AddStuddent(student student)
+        {
+            using(SqlConnection _con=new SqlConnection(_connection))
+            {
+                SqlDataAdapter adapter= new SqlDataAdapter("select * from student", _con);
+                DataSet dataSet= new DataSet();
+                adapter.Fill(dataSet);
+                DataRow newrow = dataSet.Tables[0].NewRow();
+                newrow[1]=student.Name;
+                newrow[2]=student.Department;
+                newrow[3]=student.Age;
+                dataSet.Tables[0].Rows.Add(newrow);
+                SqlCommandBuilder cmdBuilder= new SqlCommandBuilder(adapter);
+                adapter.Update(dataSet);
+            }
+            return "ok";
         }
     }
 }

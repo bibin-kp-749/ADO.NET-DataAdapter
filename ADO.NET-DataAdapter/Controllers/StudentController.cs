@@ -33,6 +33,10 @@ namespace ADO.NET_DataAdapter.Controllers
             _services.DeleteStudent(id);
             return Ok();
         }
-
+        [HttpPost]
+        public IActionResult AddStudent(student student)
+        {
+            return Ok(_services.AddStuddent(student));
+        }
     }
 }

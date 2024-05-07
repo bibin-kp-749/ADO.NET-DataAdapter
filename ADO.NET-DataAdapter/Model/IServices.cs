@@ -5,5 +5,6 @@
         public IEnumerable<student> GetStudents();
         public void UpdateStudent(student student);
         public void DeleteStudent(int Id);
+        public string AddStuddent(student student);
     }
 }
